@@ -147,3 +147,43 @@ exports.image = async (req, res) => {
     });
   }
 };
+
+exports.signupSQL = (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    connection.query(
+      " INSERT INTO users (name, email,password) VALUES (?, ?, ?)",
+      [name, email, password],
+      (err, result) => {
+        if (err) {
+          return res.status(200).json({
+            status: false,
+            error: err?.message,
+          });
+        }
+        connection.query(
+          "SELECT * FROM users WHERE id = ?",
+          [result.insertId],
+          (err, result) => {
+            if (err) {
+              return res.status(200).json({
+                status: false,
+                error: err?.message,
+              });
+            }
+            return res.status(200).json({
+              status: true,
+              result,
+            });
+          }
+        );
+      }
+    );
+  } catch (e) {
+    console.log(e.message);
+    return res.status(500).json({
+      status: false,
+      error: e?.message,
+    });
+  }
+};

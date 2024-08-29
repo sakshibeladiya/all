@@ -48,7 +48,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join("views"));
 
 app.get("/", (req, res) => {
-  return res.send("SERVER STARED ");
+  return res.send("SERVER STARED  ");
 });
 
 app.get("*", (req, res) => {

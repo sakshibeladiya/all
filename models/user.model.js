@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const UserSchema = mongoose.Schema(
+const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
@@ -25,18 +25,6 @@ const UserSchema = mongoose.Schema(
   }
 );
 
-UserSchema.pre("save", function (next) {
-  try {
-    const user = this;
-    if (!user.isModified("password")) return next();
-    const pass = bcrypt.hashSync(user.password, 10);
-    console.log("pass ===", pass);
-    user.password = pass;
-    return next();
-  } catch (error) {
-    console.log("password encypt error", error);
-    throw new Error("password encypt error", error.message);
-  }
-});
 
-module.exports = mongoose.model("User", UserSchema);
+
+module.exports = mongoose.model("User", userSchema);
